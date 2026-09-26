@@ -1,20 +1,3 @@
----
-language:
-- en
-license: apache-2.0
-tags:
-- slm
-- edge-ai
-- nvme
-- hardware-memory-bus
-- semi-parametric
-- rag
-- bm25
-- fts5
-- safemath
-- pytorch
-pipeline_tag: text-generation
----
 
 # 👑 AviGPT-250M-Instruct: Semi-Parametric Edge Intelligence
 ### World's First 250M Small Language Model with a Native NVMe Hardware Memory Bus
