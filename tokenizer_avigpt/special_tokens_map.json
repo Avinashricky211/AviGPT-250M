@@ -1,0 +1,23 @@
+{
+  "additional_special_tokens": [
+    "<think>",
+    "</think>",
+    "<correct>",
+    "</correct>",
+    "<|intent_start|>",
+    "<|intent_end|>",
+    "<|mem_query|>",
+    "<|mem_query_end|>",
+    "<|mem_payload|>",
+    "<|mem_payload_end|>",
+    "<|calc|>",
+    "<|calc_end|>",
+    "<|synthesize|>",
+    "<|im_start|>",
+    "<|im_end|>"
+  ],
+  "bos_token": "<|endoftext|>",
+  "eos_token": "<|endoftext|>",
+  "pad_token": "<|endoftext|>",
+  "unk_token": "<|endoftext|>"
+}

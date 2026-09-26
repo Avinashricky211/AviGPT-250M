@@ -1,0 +1,24 @@
+# Checkpoints & Weights (Hosted on Hugging Face: https://huggingface.co/AvinashRicky/avigpt-250m-instruct)
+*.pt
+*.bin
+*.safetensors
+*.onnx
+checkpoints/
+
+# SQLite Databases & WAL (Hosted on Hugging Face)
+*.db
+*.db-wal
+*.db-shm
+
+# Python Cache & Bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Environment & IDE
+.env
+venv/
+env/
+.idea/
+.vscode/

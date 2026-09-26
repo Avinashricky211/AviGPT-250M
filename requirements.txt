@@ -1,0 +1,7 @@
+torch>=2.2.0
+transformers>=4.40.0
+numpy>=1.24.0
+psutil>=5.9.0
+accelerate>=0.30.0
+matplotlib>=3.7.0
+huggingface_hub>=0.20.0
