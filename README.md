@@ -14,28 +14,6 @@ tags:
 - safemath
 - pytorch
 pipeline_tag: text-generation
-model-index:
-- name: AviGPT-250M-Instruct
-  results:
-  - task:
-      type: text-generation
-      name: Text Generation
-    dataset:
-      name: AviGPT Competitor Benchmark Suite (Tesla T4)
-      type: benchmark
-    metrics:
-    - name: Factual Accuracy
-      type: accuracy
-      value: 100.0
-    - name: Math Precision
-      type: accuracy
-      value: 100.0
-    - name: Composite Efficiency
-      type: efficiency
-      value: 0.40
-    - name: Resident VRAM (FP16 Edge Mode)
-      type: memory
-      value: 488 MB
 ---
 
 # 👑 AviGPT-250M-Instruct: Semi-Parametric Edge Intelligence
