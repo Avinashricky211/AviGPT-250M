@@ -4,7 +4,7 @@
 *Independent AI Researcher, India*  
 *Repository:* [https://github.com/Avinashricky211/AviGPT-250M](https://github.com/Avinashricky211/AviGPT-250M)  
 *Model Weights:* [https://huggingface.co/AvinashRicky/avigpt-250m-instruct](https://huggingface.co/AvinashRicky/avigpt-250m-instruct)  
-*Correspondence:* `avinashricky211@gmail.com`
+*Correspondence:* `avinashrickyy@gmail.com`
 
 ---
 
