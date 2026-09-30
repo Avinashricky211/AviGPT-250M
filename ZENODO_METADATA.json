@@ -1,0 +1,51 @@
+{
+  "metadata": {
+    "title": "AviGPT-250M-Instruct: Semi-Parametric Edge Intelligence with a Native NVMe Hardware Memory Bus",
+    "upload_type": "publication",
+    "publication_type": "whitepaper",
+    "publication_date": "2026-09-30",
+    "description": "AviGPT-250M-Instruct is a 250M-parameter autoregressive small language model (SLM) introducing a Semi-Parametric Decoupling paradigm for resource-constrained edge computing. Rather than overloading transformer weights with static encyclopedic memorization and floating-point arithmetic approximation, AviGPT-250M delegates factual storage to a native, sub-millisecond (0.0015 ms / 1.52 µs) NVMe Hardware Memory Bus powered by SQLite Full-Text Search (FTS5) with Okapi BM25 ranking, and delegates arithmetic evaluation to a sandboxed deterministic AST SafeMath evaluator. Across an identical 8-model competitive benchmark on an NVIDIA Tesla T4 GPU against models ranging from 125M to 1.1B parameters, AviGPT-250M achieves 100.0% Factual Accuracy and 100.0% Deterministic Math Precision, delivering the Global #1 Composite Efficiency score of 0.40 while fitting inside an ultra-compact resident VRAM footprint of just 488 MB.",
+    "creators": [
+      {
+        "name": "Ricky, Yadlapalli Avinash",
+        "affiliation": "Independent AI Researcher, India",
+        "orcid": ""
+      }
+    ],
+    "access_right": "open",
+    "license": "Apache-2.0",
+    "keywords": [
+      "Small Language Models",
+      "SLM",
+      "Edge Intelligence",
+      "Semi-Parametric Architecture",
+      "NVMe Hardware Memory Bus",
+      "SQLite FTS5",
+      "BM25 Ranking",
+      "Deterministic Math",
+      "AST SafeMath",
+      "Knowledge Grounding",
+      "MobileLLM",
+      "Parameter Efficiency",
+      "Edge AI"
+    ],
+    "communities": [
+      {
+        "identifier": "zenodo"
+      }
+    ],
+    "related_identifiers": [
+      {
+        "identifier": "https://huggingface.co/AvinashRicky/avigpt-250m-instruct",
+        "relation": "isSupplementTo",
+        "scheme": "url"
+      },
+      {
+        "identifier": "https://github.com/Avinashricky211/AviGPT-250M",
+        "relation": "isDocumentedBy",
+        "scheme": "url"
+      }
+    ],
+    "notes": "Model weights checkpointed in bfloat16 (477.46 MB) available on Hugging Face Hub under AvinashRicky/avigpt-250m-instruct."
+  }
+}
