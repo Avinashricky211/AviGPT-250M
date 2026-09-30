@@ -10,11 +10,11 @@
 
 ### Abstract
 
-Small Language Models (SLMs) operating under sub-1-billion parameter regimes face an intrinsic thermodynamic trade-off known as the *Parametric Memory Wall*: as parameter budgets contract to satisfy strict edge-device hardware constraints ($\le 500\text{ MB}$ memory footprint), parameter capacity becomes oversaturated. Models are forced to arbitrate between linguistic grammar, multi-step logical deduction, and static encyclopedic factual memorization, resulting in catastrophic factual hallucinations and arithmetic degradation. 
+Small Language Models (SLMs) operating under sub-1-billion parameter regimes face an intrinsic thermodynamic trade-off known as the *Parametric Memory Wall*: as parameter budgets contract to satisfy strict edge-device hardware constraints ($\le 500\text{ MB}$ memory footprint), parameter capacity becomes oversaturated. Models are forced to arbitrate between linguistic grammar, multi-step logical deduction, and static encyclopedic factual memorization, producing higher error rates on factual recall and arithmetic tasks. 
 
 In this paper, we introduce **AviGPT-250M-Instruct**, an autoregressive causal language model with $250,269,696$ parameters engineered under a **Semi-Parametric Decoupling** paradigm. Rather than forcing transformer weights to store encyclopedic trivia and execute floating-point arithmetic through statistical next-token prediction, AviGPT-250M delegates factual recall to a native, sub-millisecond **NVMe Hardware Memory Bus** powered by SQLite Full-Text Search (FTS5) with Okapi BM25 ranking, and delegates arithmetic evaluation to a sandboxed deterministic **AST SafeMath** execution engine. The neural core concentrates exclusively on syntactic intent parsing, contextual query deconstruction, and grounded multi-source synthesis. 
 
-Evaluated across an identical 8-model competitive benchmark spanning from $125\text{M}$ to $1.1\text{B}$ parameters on an NVIDIA Tesla T4 GPU, AviGPT-250M achieves **$100.0\%$ Factual Accuracy** and **$100.0\%$ Deterministic Math Precision**, delivering a world-class **Composite Efficiency score of $0.40$**—surpassing models up to $4.4\times$ its parameter scale (including TinyLlama-1.1B, Qwen2.5-0.5B, and SmolLM2-360M). Micro-benchmarks across $500$ consecutive physical flash transactions reveal a mean hardware retrieval latency of **$0.00152\text{ ms}$** ($1.52\text{ }\mu\text{s}$) with peak throughput exceeding $650,000\text{ QPS}$, outperforming traditional vector databases (ChromaDB, Pinecone) by over $22,000\times$ to $50,000\times$. Ablation analysis demonstrates that activating the NVMe bus provides an absolute $+75.0\%$ surge in factual grounding over pure parametric weights, while retaining a lightweight FP16 resident footprint of just **$488\text{ MB}$ VRAM**.
+Evaluated across an identical 8-model competitive benchmark spanning from $125\text{M}$ to $1.1\text{B}$ parameters on an NVIDIA Tesla T4 GPU, AviGPT-250M achieves **$100.0\%$ Factual Accuracy** and **$100.0\%$ Deterministic Math Precision**, yielding a **Composite Efficiency score of $0.40$**, which leads an 8-model competitive cohort including models up to $4.4\times$ its parameter scale (such as TinyLlama-1.1B, Qwen2.5-0.5B, and SmolLM2-360M). Micro-benchmarks across $500$ consecutive physical flash transactions reveal a mean hardware retrieval latency of **$0.00152\text{ ms}$** ($1.52\text{ }\mu\text{s}$) with peak throughput exceeding $650,000\text{ QPS}$. In contrast, local and cloud vector databases measure between $45\text{ ms}$ and $100\text{ ms}$. Ablation analysis indicates that activating the NVMe bus improves factual accuracy by $75.0$ percentage points over pure parametric decoding (from $25.0\%$ to $100.0\%$) while operating within a resident memory footprint of **$488\text{ MB}$ VRAM**.
 
 **Keywords:** Small Language Models, Edge Intelligence, Semi-Parametric Architecture, NVMe Hardware Memory Bus, FTS5 BM25, Deterministic Math, AST SafeMath, Knowledge Grounding.
 
@@ -22,7 +22,7 @@ Evaluated across an identical 8-model competitive benchmark spanning from $125\t
 
 ## 1. Introduction & The Parametric Memory Wall in Edge SLMs
 
-Over the past three years, parameter scaling laws \cite{kaplan2020scaling, chinchilla2022} have dictated that language models acquire knowledge primarily by internalizing linguistic patterns, factual assertions, and reasoning paths into dense weight matrices. While multi-billion parameter foundation models ($\ge 70\text{B}$) exhibit remarkable broad-domain factual recall, deployment of such systems on resource-constrained consumer edge devices—such as embedded SoCs, mobile handsets, local autonomous robots, and offline industrial terminals—remains economically and physically prohibitive. Edge environments enforce rigid operational boundaries: strictly limited DRAM/VRAM envelopes ($\le 1\text{ GB}$), constrained thermal design power (TDP), and low batch inference latency.
+Over the past three years, parameter scaling laws \cite{kaplan2020scaling, chinchilla2022} have dictated that language models acquire knowledge primarily by internalizing linguistic patterns, factual assertions, and reasoning paths into dense weight matrices. While multi-billion parameter foundation models ($\ge 70\text{B}$) exhibit remarkable broad-domain factual recall, deployment of such systems on resource-constrained consumer edge devices (such as embedded SoCs, mobile handsets, and offline terminals) remains economically and physically prohibitive. Edge environments enforce rigid operational boundaries: strictly limited DRAM/VRAM envelopes ($\le 1\text{ GB}$), constrained thermal design power (TDP), and low batch inference latency.
 
 To address these hardware limitations, the research community has pivoted toward Small Language Models (SLMs) operating between $100\text{M}$ and $1\text{B}$ parameters \cite{mobilellm2024, smollm2024}. However, sub-billion parameter models confront a fundamental theoretical barrier: the **Parametric Memory Wall**.
 
@@ -61,9 +61,9 @@ In a causal transformer, every feed-forward network (FFN) layer can be viewed as
 2. **Abstract Reasoning & Logic:** Step-by-step problem decomposition, multi-hop contextual deduction, and semantic state tracking.
 3. **Episodic & Encyclopedic Trivia:** Exact historical dates, chemical formulas, physical constants, biological taxonomies, and geographic figures.
 
-The third category—static factual memorization—exhibits the lowest parameter compression efficiency. Storing millions of discrete factual triples requires disproportionate parametric volume. When forced to compress encyclopedic knowledge into bounded weights, the network suffers from representation interference: gradient updates for factual recall degrade reasoning performance, while pruning or quantizing weights causes catastrophic factual hallucinations.
+The third category, static factual memorization, exhibits the lowest parameter compression efficiency. Storing millions of discrete factual triples requires disproportionate parametric volume. Compressing encyclopedic knowledge into bounded weights creates representation interference: gradient updates for factual recall disrupt attention circuits, and weight quantization increases factual errors.
 
-Furthermore, elementary arithmetic operations (e.g., $84 \times 16$ or $1000 - 382$) are fundamentally deterministic algorithms. Forcing an autoregressive probability distribution $\mathcal{P}(w_t \mid w_{<t})$ over vocabulary tokens $\mathcal{V}$ to approximate continuous arithmetic induces stochastic error, producing subtle numerical errors that compromise trust in edge deployments.
+Furthermore, elementary arithmetic operations (e.g., $84 \times 16$ or $1000 - 382$) are fundamentally deterministic algorithms. Forcing an autoregressive probability distribution $\mathcal{P}(w_t \mid w_{<t})$ over vocabulary tokens $\mathcal{V}$ to approximate continuous arithmetic induces stochastic error, producing numerical errors during multi-step arithmetic.
 
 ### 1.2 The Semi-Parametric Architectural Thesis
 
@@ -119,9 +119,9 @@ Product-Key Memory (PKM) networks \cite{lample2019large} utilize sparse key-valu
 
 ### 2.3 Toolformer & Agentic Delimiters
 
-Toolformer \cite{schick2023toolformer} demonstrated that language models can self-supervise the generation of API calls formatted as text tokens (e.g., `[Calculator(expr)]`). However, Toolformer relied on external Python interpreters running asynchronously over standard standard input/output streams or remote HTTP endpoints, causing substantial context-switching latency ($150\text{ ms} - 1000\text{ ms}$) and exposing edge devices to remote code execution (RCE) vulnerabilities.
+Toolformer \cite{schick2023toolformer} demonstrated that language models can self-supervise the generation of API calls formatted as text tokens (e.g., `[Calculator(expr)]`). However, Toolformer relied on external Python interpreters running asynchronously over standard standard input/output streams or remote HTTP endpoints, which incurs $150\text{ ms}$ to $1000\text{ ms}$ of context-switching latency and presents security risks in edge environments.
 
-AviGPT-250M embeds a closed-loop **Hardware Delimiter State Machine** directly within its autoregressive decoding loop. Special tokens (`<|mem_query|>`, `<|calc|>`) are intercepted at the tokenizer tensor boundary. Memory lookups and math calculations are evaluated in-process via C-level SQLite calls and a strict Python AST whitelist, reinjecting payloads (`<|mem_payload|>`) with zero process spawning overhead.
+AviGPT-250M embeds a closed-loop **Hardware Delimiter State Machine** directly within its autoregressive decoding loop. Special tokens (`<|mem_query|>`, `<|calc|>`) are intercepted at the tokenizer tensor boundary. Memory lookups and math calculations are evaluated in-process via C-level SQLite calls and a strict Python AST whitelist, and injects payloads (`<|mem_payload|>`) directly without spawning external processes.
 
 ### 2.4 MobileLLM & Deep-Thin Design Principles
 
@@ -131,7 +131,7 @@ Recent work on edge architectures by Meta, notably MobileLLM \cite{mobilellm2024
 
 ## 3. Architecture & System Design
 
-AviGPT-250M-Instruct comprises four symbiotic architectural layers:
+AviGPT-250M-Instruct consists of four architectural components:
 1. **The Deep-Thin Autoregressive Neural Core**
 2. **The Hardware-Coupled Token Delimiter Protocol**
 3. **The Native NVMe SSD Memory Bus Engine**
@@ -210,7 +210,7 @@ AviGPT-250M-Instruct comprises four symbiotic architectural layers:
 The neural engine of AviGPT-250M is a decoder-only causal transformer parameterized to maximize multi-step reasoning capabilities while fitting comfortably inside sub-$500\text{ MB}$ memory budgets.
 
 #### 1. Deep-Thin Layer Topography
-Following the structural findings of MobileLLM \cite{mobilellm2024}, wider and shallower architectures ($d=2048, L=12$) exhibit higher validation perplexity than deeper, narrower networks ($d=1024, L=24$) at identical parameter counts. AviGPT-250M fixes hidden dimension $d = 1024$ and stacks $24$ distinct transformer layers. This deep 24-layer depth facilitates extensive sequential representation updates, critical for compositional syntax parsing and multi-step delimiter tracking.
+Following the structural findings of MobileLLM \cite{mobilellm2024}, wider and shallower architectures ($d=2048, L=12$) exhibit higher validation perplexity than deeper, narrower networks ($d=1024, L=24$) at identical parameter counts. AviGPT-250M fixes hidden dimension $d = 1024$ and stacks $24$ distinct transformer layers. The 24-layer depth provides sequential capacity for syntax parsing and delimiter state tracking.
 
 #### 2. Grouped-Query Attention (GQA 4:1)
 Standard Multi-Head Attention (MHA) maintains an equal number of query, key, and value heads ($H_q = H_k = H_v = 16$), creating a significant Key-Value (KV) cache memory footprint during autoregressive token generation:
@@ -247,7 +247,7 @@ Maintaining separate matrices consumes $65.54\text{M}$ parameters—representing
 
 $$\mathbf{W}_{\text{lm}} \equiv \mathbf{E}^T$$
 
-This architectural decision reclaims **$32,768,000$ parameters** (or $\approx 50.3\text{M}$ parameters compared to models with 50k vocabularies). These reclaimed parameters are reinvested directly into increasing transformer depth from 16 to 24 layers, significantly elevating the model’s semantic capacity.
+This architectural decision reclaims **$32,768,000$ parameters** (or $\approx 50.3\text{M}$ parameters compared to models with 50k vocabularies). These parameters are reallocated directly to depth, expanding the network from 16 to 24 layers.
 
 ---
 
@@ -335,7 +335,7 @@ CREATE TABLE IF NOT EXISTS missing_knowledge_audit (
 );
 ```
 
-This log gives the model operational self-awareness: developers can inspect `missing_knowledge_audit` to identify exactly what factual information edge users are requesting, enabling targeted ingestion without blind scraping.
+Developers can inspect `missing_knowledge_audit` to identify queries with missing index coverage and ingest relevant records without broad crawling.
 
 ---
 
@@ -354,7 +354,7 @@ When the model emits `<|calc|> expression <|calc_end|>`, the runtime extracts th
 ```
 
 #### Security Guardrails & Denial-of-Service Defense
-Executing dynamic code (`eval()`) creates critical security vulnerabilities (arbitrary code execution). `SafeMathEvaluator` implements an airtight recursive AST visitor:
+Executing dynamic code (`eval()`) creates critical security vulnerabilities (arbitrary code execution). `SafeMathEvaluator` implements a restricted recursive AST visitor:
 1. **Operator Whitelist:** Only arithmetic primitives are allowed (`ast.Add`, `ast.Sub`, `ast.Mult`, `ast.Div`, `ast.FloorDiv`, `ast.Mod`, `ast.Pow`, `ast.USub`, `ast.UAdd`).
 2. **Node Rejection:** Function calls (`ast.Call`), attribute lookups (`ast.Attribute`), variable names (`ast.Name`), list comprehensions, and control structures raise immediate parsing exceptions.
 3. **Type Rejection:** In Python, `bool` is a subclass of `int`. The evaluator explicitly rejects `isinstance(node.value, bool)` to prevent expressions like `True + 1`. Complex results (e.g., $(-4)^{0.5}$) are caught and rejected.
@@ -470,7 +470,7 @@ This formal masking ensures that:
 
 ### 4.4 The Composite Efficiency Metric
 
-Prior SLM benchmarking conventions present a deceptive picture: an ultra-compact model (e.g., $135\text{M}$) may score well on pure factual multiple-choice questions through overfitted memorization, yet score **$0.0\%$ on elementary arithmetic**, rendering it unusable for real-world tasks. Conversely, a $1.1\text{B}$ model may achieve modest scores while demanding $4.4\times$ more memory and compute.
+Standard SLM benchmarks often omit arithmetic evaluation: an ultra-compact model (e.g., $135\text{M}$) may score well on pure factual multiple-choice questions through overfitted memorization, yet score **$0.0\%$ on elementary arithmetic**, rendering it unusable for real-world tasks. Conversely, a $1.1\text{B}$ model may achieve modest scores while demanding $4.4\times$ more memory and compute.
 
 To establish a unified, objective benchmark for edge models, we define the **Composite Efficiency Metric** ($\mathcal{E}_{\text{comp}}$):
 
@@ -539,8 +539,8 @@ OpenELM-270M              [0.00]
 
 #### Key Findings:
 1. **AviGPT-250M Outperforms Models 4.4x Larger:** AviGPT-250M achieves $100.0\%$ composite accuracy, outperforming TinyLlama-1.1B ($52.1\%$) and Qwen2.5-0.5B ($85.4\%$) while requiring less than a quarter of the VRAM ($488\text{ MB}$ vs $2,108\text{ MB}$).
-2. **The 135M Illusion Exposed:** SmolLM2-135M achieved $100\%$ on factual queries through memorization, but registered **$0.0\%$ on mathematical reasoning**, failing completely on multi-digit arithmetic. AviGPT-250M balances factual recall and mathematical correctness, securing the Global #1 Composite Efficiency score of **$0.40$**.
-3. **Generation Speed:** AviGPT-250M clocked the fastest average response generation time ($1.84\text{s}$), more than $3\times$ faster than SmolLM2-135M ($5.63\text{s}$) due to its optimized 24-layer deep-thin tensor layout and native kernel compilation.
+2. **Factual Memorization Versus Arithmetic Generalization:** SmolLM2-135M achieved $100\%$ on factual queries through memorization, but registered **$0.0\%$ on mathematical reasoning**, failing completely on multi-digit arithmetic. AviGPT-250M balances factual recall and mathematical correctness, securing the Global #1 Composite Efficiency score of **$0.40$**.
+3. **Generation Speed:** AviGPT-250M generated responses in $1.84\text{s}$ on average, compared to $5.63\text{s}$ for SmolLM2-135M.
 
 ---
 
@@ -570,12 +570,12 @@ Throughput Estimate                     657,549 Queries / Second             657
 ====================================================================================================
 Cloud Vector DB (Pinecone/Milvus) : 100.0 ms   | ████████████████████████████████████████ (Baseline)
 Local Vector DB (ChromaDB/FAISS) :  45.0 ms   | ██████████████████
-AviGPT-250M NVMe Hardware Bus    :   0.0015 ms | ▏ (>22,500x FASTER!)
+AviGPT-250M NVMe Hardware Bus    :   0.0015 ms | ▏ (>22,500x speedup)
 ====================================================================================================
 ```
 
-* **Comparison to Local Vector Stores:** Standard local vector search engines (e.g., ChromaDB, FAISS running on CPU) exhibit average retrieval latencies of $\approx 45.0\text{ ms}$. AviGPT’s NVMe SQLite FTS5 engine responds in $0.00152\text{ ms}$—**$29,600\times$ faster**.
-* **Comparison to Cloud Managed Vector DBs:** Cloud vector databases (Pinecone, Milvus) incur network transport latencies averaging $\approx 100.0\text{ ms}$. AviGPT's bus is **$65,700\times$ faster**, enabling real-time factual injection inside tight token generation loops without stalling the autoregressive pipeline.
+* **Comparison to Local Vector Stores:** Standard local vector search engines (e.g., ChromaDB, FAISS running on CPU) exhibit average retrieval latencies of $\approx 45.0\text{ ms}$. AviGPT's NVMe SQLite FTS5 engine responds in $0.00152\text{ ms}$, representing a $29,600\times$ speedup.
+* **Comparison to Cloud Managed Vector DBs:** Cloud vector databases (Pinecone, Milvus) incur network transport latencies averaging $\approx 100.0\text{ ms}$. AviGPT's bus provides a $65,700\times$ speedup, enabling factual injection within the decoding loop without stalling token generation.
 
 ---
 
@@ -600,7 +600,7 @@ Identity            Creator & Architecture identity            ✅ PASS (4/4 key
 Identity            NVMe Memory Bus Protocol in AviGPT         ✅ PASS (2/4 keys)     ✅ PASS (4/4 keys)
 ======================================================================================================
 SUMMARY ACCURACY:                                            25.0% (2/8)            100.0% (8/8)
-MEASURED DELTA:                                              +75.0% ACCURACY SURGE (p < 0.001)
+MEASURED DELTA:                                              +75.0% Accuracy Delta (p < 0.001)
 ======================================================================================================
 ```
 
@@ -684,7 +684,7 @@ Development of the AviGPT ecosystem is actively progressing along three primary 
 
 In this work, we introduced **AviGPT-250M-Instruct**, demonstrating that intelligent behavior in Small Language Models does not require massive parameter scaling. By establishing the **Semi-Parametric Decoupling** paradigm, AviGPT-250M offloads encyclopedic memorization to a native **NVMe Hardware Memory Bus** operating at $0.0015\text{ ms}$ retrieval latency, and routes arithmetic calculations to a deterministic **AST SafeMath** evaluator. 
 
-With $250,269,696$ parameters and a resident VRAM footprint of just **$488\text{ MB}$**, AviGPT-250M achieves **$100.0\%$ Factual Accuracy** and **$100.0\%$ Deterministic Math Precision**, setting the Global #1 Leaderboard record for **Composite Efficiency ($0.40$)** among models up to $1.1\text{B}$ parameters. This architecture offers a viable, production-ready blueprint for deploying capable, non-hallucinating artificial intelligence directly to resource-constrained edge hardware.
+With $250,269,696$ parameters and a resident VRAM footprint of just **$488\text{ MB}$**, AviGPT-250M achieves **$100.0\%$ Factual Accuracy** and **$100.0\%$ Deterministic Math Precision**, setting the Global #1 Leaderboard record for **Composite Efficiency ($0.40$)** among models up to $1.1\text{B}$ parameters. This architecture demonstrates that offloading static knowledge and deterministic math to hardware-speed subsystems enables compact models to operate reliably on resource-constrained edge devices.
 
 ---
 
