@@ -15,15 +15,8 @@ inference: false
 # 👑 AviGPT-250M-Instruct: Semi-Parametric Edge Intelligence
 ### Semi-Parametric 250M Small Language Model with a Native NVMe Hardware Memory Bus
 
-<div align="center">
-  <img src="assets/avibook_official_logo.png" alt="AviBook Logo" width="180"/>
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  <img src="assets/nvidia-inception-program-badge.png" alt="Member of NVIDIA Inception Program" width="240"/>
-  <br>
-  <b>AviBook is a proud member of the NVIDIA Inception Program</b>
-</div>
+> **AviBook is a proud member of the NVIDIA Inception Program**
 
-<br>
 
 **Architect, System Designer & Sole Creator:** Yadlapalli Avinash Ricky (India 🇮🇳)  
 **Parent Organization:** AviBook ([avibook.online](https://avibook.online))  
