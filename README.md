@@ -1,25 +1,9 @@
----
-language:
-- en
-license: apache-2.0
-tags:
-- text-generation
-- slm
-- edge-ai
-- semi-parametric
-- tool-use
-pipeline_tag: text-generation
-inference: false
----
-
 # 👑 AviGPT-250M-Instruct: Semi-Parametric Edge Intelligence
 ### Semi-Parametric 250M Small Language Model with a Native NVMe Hardware Memory Bus
 
-> **AviBook is a proud member of the NVIDIA Inception Program**
-
+> **AviGPT is a proud member of the NVIDIA Inception Program**
 
 **Architect, System Designer & Sole Creator:** Yadlapalli Avinash Ricky (India 🇮🇳)  
-**Parent Organization:** AviBook ([avibook.online](https://avibook.online))  
 **Model Parameters:** 250,269,696 (~250M)  
 **Resident VRAM Footprint:** **488 MB** (FP16 Edge Mode)  
 **Checkpointed Weights:** 477.5 MB  
