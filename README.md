@@ -1,8 +1,32 @@
+---
+language:
+- en
+license: apache-2.0
+tags:
+- text-generation
+- slm
+- edge-ai
+- semi-parametric
+- tool-use
+pipeline_tag: text-generation
+inference: false
+---
 
 # 👑 AviGPT-250M-Instruct: Semi-Parametric Edge Intelligence
-### World's First 250M Small Language Model with a Native NVMe Hardware Memory Bus
+### Semi-Parametric 250M Small Language Model with a Native NVMe Hardware Memory Bus
+
+<div align="center">
+  <img src="assets/avibook_official_logo.png" alt="AviBook Logo" width="180"/>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  <img src="assets/nvidia-inception-program-badge.png" alt="Member of NVIDIA Inception Program" width="240"/>
+  <br>
+  <b>AviBook is a proud member of the NVIDIA Inception Program</b>
+</div>
+
+<br>
 
 **Architect, System Designer & Sole Creator:** Yadlapalli Avinash Ricky (India 🇮🇳)  
+**Parent Organization:** AviBook ([avibook.online](https://avibook.online))  
 **Model Parameters:** 250,269,696 (~250M)  
 **Resident VRAM Footprint:** **488 MB** (FP16 Edge Mode)  
 **Checkpointed Weights:** 477.5 MB  
@@ -12,6 +36,7 @@
 
 <div align="center">
 
+[![NVIDIA Inception](https://img.shields.io/badge/NVIDIA-Inception%20Member-76B900?logo=nvidia&logoColor=white)](#)
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](competitor_benchmark_colab.ipynb)
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Parameters: 250M](https://img.shields.io/badge/Parameters-250M-gold.svg)](#)
@@ -25,11 +50,11 @@
 
 ## 🌟 Key Architectural Breakthroughs
 
-* 🇮🇳 **Pioneered in India:** Independently architected and engineered from the ground up by **Yadlapalli Avinash Ricky** as a next-generation breakthrough in edge-tier Small Language Models (SLMs).
-* ⚡ **World's First 250M SLM with Native NVMe Bus:** Decouples parametric weights from non-parametric factual storage using an ultra-low latency (**0.002 ms**) SQLite FTS5 engine operating directly on high-speed NVMe flash storage.
-* 🛡️ **Zero Parametric Hallucination on Indexed Knowledge:** Factual queries trigger hardware routing tokens (`<|mem_query|>`) to fetch authoritative ground truth directly from SSD storage, eliminating statistical guessing.
-* 🧮 **100% Deterministic Arithmetic Accuracy:** Emits `<|calc|>` tokens directly into a sandboxed AST SafeMath Evaluator, completely eliminating arithmetic hallucinations.
-* 🏆 **Global #1 Leaderboard Composite Efficiency (0.40):** Outperforms models up to 4.4x its parameter size (including TinyLlama-1.1B) across joint factual recall (**100.0%**) and mathematical precision (**100.0%**).
+* 🇮🇳 **Pioneered in India:** Independently architected and engineered from the ground up by **Yadlapalli Avinash Ricky** as a high-efficiency edge-tier Small Language Model (SLM).
+* ⚡ **Semi-Parametric Decoupling with Native NVMe Bus:** Decouples compact parametric weights from non-parametric factual storage using an ultra-low latency (**0.002 ms** cached local lookup) SQLite FTS5 engine operating directly on high-speed NVMe flash storage.
+* 🛡️ **Zero Parametric Hallucination on Indexed Knowledge:** Factual queries trigger hardware routing tokens (`<|mem_query|>`) to fetch authoritative ground truth directly from local storage, grounding generation on verified facts.
+* 🧮 **100% Deterministic Arithmetic Accuracy:** Emits `<|calc|>` tokens directly into a sandboxed AST SafeMath Evaluator, offloading symbolic arithmetic to deterministic computation.
+* 🏆 **Top-Ranked Composite Efficiency (0.40):** Balances parameter footprint against multi-disciplinary task accuracy, outperforming examined baseline models up to 4.4x its parameter size in edge memory and speed.
 
 ---
 
@@ -45,15 +70,15 @@ Arithmetic is routed to an **AST SafeMath Deterministic Evaluator**, eliminating
 
 ---
 
-## 🏆 Head-to-Head Competitor Benchmark
+## 📊 Comparative Edge Benchmark: Architectural Efficiency on Tesla T4
 
-AviGPT-250M-Instruct was evaluated head-to-head on an identical benchmark against 7 leading open-source models up to 1.1 Billion parameters on an NVIDIA Tesla T4 GPU (15GB VRAM):
+AviGPT-250M-Instruct was evaluated in a reproducible benchmark against 7 open-weight baseline models up to 1.1 Billion parameters on an NVIDIA Tesla T4 GPU (15GB VRAM):
 
 <div align="center">
   <img src="assets/competitor_comparison_charts.png" alt="Benchmark Comparison Charts" width="100%"/>
 </div>
 
-### Official Leaderboard (Verified on Google Colab T4)
+### Comparative Leaderboard (Verified on Google Colab T4)
 
 | Rank | Model | Parameters | Factual Acc | Math Precision | Composite Acc | **Composite Efficiency** | VRAM | Avg Latency |
 | :---: | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
@@ -70,8 +95,19 @@ AviGPT-250M-Instruct was evaluated head-to-head on an identical benchmark agains
   <img src="assets/accuracy_vs_params.png" alt="Pareto Efficiency Curve" width="85%"/>
 </div>
 
-> **Notice on Composite Efficiency:**  
-> Prior benchmarks evaluating only factual accuracy produced an illusion where 135M models appeared efficient despite scoring **0% on Math Precision**. AviGPT-250M-Instruct calculates **Composite Efficiency** (`Overall Accuracy / Parameters`), capturing true multi-disciplinary intelligence where AviGPT-250M-Instruct ranks **#1**.
+### 🔬 Semi-Parametric Ablation Analysis (Bus ON vs. Bus OFF)
+
+To isolate the specific architectural contribution of the native NVMe Hardware Memory Bus and AST SafeMath routing from pure parametric memory, we performed an ablation study on AviGPT-250M:
+
+| Configuration | Parametric Weights | Non-Parametric Bus | Factual Accuracy | Math Precision | Composite Acc |
+| :--- | :---: | :---: | :---: | :---: | :---: |
+| **AviGPT-250M (Bus ON)** | 250M | Active (SQLite FTS5 + SafeMath) | **100.0%** | **100.0%** | **100.0%** |
+| **AviGPT-250M (Bus OFF)** | 250M | Inactive (Pure Weights Only) | 25.0% | 0.0% | 12.5% |
+
+> **Ablation Insight:** In isolation (Bus OFF), a 250M parameter dense model exhibits the typical capacity boundaries of sub-1B architectures: 25.0% on factual recall and 0.0% on multi-step arithmetic due to parameter compression limits. When the native NVMe Hardware Memory Bus and AST routing are engaged (Bus ON), the model offloads static recall to local SSD lookups (100.0% recall on indexed corpus) and routes arithmetic expressions to deterministic execution (100.0% precision), without bloating VRAM consumption.
+
+> **Metric Definition & Methodology:**  
+> **Composite Efficiency** is defined as `Composite Accuracy (%) / Parameters (Billions) / 1000`, measuring task accuracy delivered per unit parameter overhead on constrained edge hardware. All competitor baseline models were evaluated in their standard out-of-the-box configuration under identical batch-size and temperature settings on Google Colab T4.
 
 ---
 
@@ -176,8 +212,8 @@ avigpt_250m_release/
 ├── avigpt_ssd_memory.db               # 55.68 MB NVMe FTS5 Knowledge Base (24,628 articles)
 ├── config.py                          # Architectural config & special token registry
 ├── model.py                           # AviGPT neural core (RoPE, GQA, SwiGLU, RMSNorm)
-├── memory_bus.py                      # NVMe SSD hardware memory engine & SafeMath (Protected)
-├── terminal_eval.py                   # High-performance terminal inference engine (Protected)
+├── memory_bus.py                      # NVMe SSD hardware memory engine & SafeMath
+├── terminal_eval.py                   # High-performance terminal inference engine
 ├── eval_proof.py                      # Scientific benchmark verification suite
 ├── dataset_cookbook.py                # Universal dataset converter (Hugging Face / JSONL)
 ├── DATASET_INGESTION_COOKBOOK.md      # Dataset ingestion developer guide
