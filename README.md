@@ -11,8 +11,9 @@
 
 ---
 
-<div align="center">
-
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23457383.svg)](https://doi.org/10.5281/zenodo.23457383)
+[![ORCID](https://img.shields.io/badge/ORCID-0009--0002--2891--1079-green.svg)](https://orcid.org/0009-0002-2891-1079)
+[![Patent](https://img.shields.io/badge/Indian%20Patent%20App-202641124724-blue.svg)](https://doi.org/10.5281/zenodo.23457383)
 [![NVIDIA Inception](https://img.shields.io/badge/NVIDIA-Inception%20Member-76B900?logo=nvidia&logoColor=white)](#)
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](competitor_benchmark_colab.ipynb)
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
@@ -220,11 +221,23 @@ avigpt_250m_release/
 AviGPT-250M-Instruct is an original architecture created, engineered, and trained exclusively by **Yadlapalli Avinash Ricky**.
 
 ```bibtex
-@misc{ricky2026avigpt250minstruct,
-  author = {Yadlapalli Avinash Ricky},
-  title = {AviGPT-250M-Instruct: Semi-Parametric Edge Intelligence with Native NVMe Hardware Memory Bus},
-  year = {2026},
-  publisher = {Hugging Face},
-  howpublished = {\url{https://huggingface.co/AvinashRicky/avigpt-250m-instruct}}
+@article{yadlapalli2026dualtier,
+  title={The Dual-Tier Memory Hierarchy for Neural Language Processing: Scale-Invariant Semi-Parametric Intelligence via Hardware-Coupled Non-Volatile Storage},
+  author={Yadlapalli, Avinash Ricky},
+  journal={Zenodo (CERN)},
+  year={2026},
+  doi={10.5281/zenodo.23457383},
+  url={https://doi.org/10.5281/zenodo.23457383},
+  note={Indian Patent Application No. 202641124724}
+}
+
+@article{yadlapalli2026avigpt250m,
+  title={AviGPT-250M-Instruct: Semi-Parametric Edge Intelligence with a Native NVMe Hardware Memory Bus},
+  author={Yadlapalli, Avinash Ricky},
+  journal={Zenodo (CERN)},
+  year={2026},
+  doi={10.5281/zenodo.23402518},
+  url={https://doi.org/10.5281/zenodo.23402518}
 }
 ```
+
