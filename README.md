@@ -1,10 +1,10 @@
-# 👑 AviGPT-250M-Instruct: Semi-Parametric Edge Intelligence
-### Semi-Parametric 250M Small Language Model with a Native NVMe Hardware Memory Bus
+# AviGPT-250M-Instruct: Semi-Parametric Edge Intelligence
+### Semi-Parametric 250M Small Language Model with a Native Local Memory Bus
 
 > **AviGPT is a proud member of the NVIDIA Inception Program**
 
-**Architect, System Designer & Sole Creator:** Yadlapalli Avinash Ricky (India 🇮🇳)  
-**Model Parameters:** 250,269,696 (~250M)  
+**Architect, System Designer & Creator:** Yadlapalli Avinash Ricky (India 🇮🇳)  
+**Model Parameters:** 250,269,696 (~250.1M)  
 **Resident VRAM Footprint:** **488 MB** (FP16 Edge Mode)  
 **Checkpointed Weights:** 477.5 MB  
 **Status:** SFT 2.0 Production Release  
@@ -19,8 +19,8 @@
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Parameters: 250M](https://img.shields.io/badge/Parameters-250M-gold.svg)](#)
 [![VRAM: 488MB](https://img.shields.io/badge/VRAM-488MB%20Edge%20Mode-success.svg)](#)
-[![Retrieval: 0.002ms](https://img.shields.io/badge/NVMe%20Bus-0.002ms-orange.svg)](#)
-[![Composite Efficiency: 0.40](https://img.shields.io/badge/Composite%20Efficiency-0.40%20%231%20Rank-green.svg)](#)
+[![Retrieval: Sub-ms](https://img.shields.io/badge/Local%20Bus-Sub--Millisecond-orange.svg)](#)
+[![Composite Efficiency: 0.40](https://img.shields.io/badge/Composite%20Efficiency-0.40-green.svg)](#)
 
 </div>
 
@@ -97,9 +97,10 @@ AviGPT-250M-Instruct replaces heavy vector databases (FAISS, Chroma, Pinecone) w
   <img src="assets/memory_bus_latency.png" alt="Flash Retrieval Speed Comparison" width="85%"/>
 </div>
 
-* **NVMe Hardware Memory Bus:** **0.0020 ms** (~496,000 queries/second)
-* **Local Vector DBs (Chroma / FAISS):** **45.0 ms** (**22,500x slower**)
-* **Cloud Vector DBs (Pinecone / Milvus):** **100.0 ms** (**50,000x slower**)
+* **Local In-Process SQLite FTS5 Bus:** **0.0015 – 0.020 ms** (1.52 μs memory-mapped cache; <20 μs physical block read)
+* **Local Dense Vector DBs (Chroma / FAISS on CPU):** **15.0 – 45.0 ms**
+* **Cloud Vector DBs (Pinecone / Milvus):** **50.0 – 150.0 ms**
+* **Advantages:** Orders of magnitude faster lexical matching with zero auxiliary embedding model VRAM overhead.
 * **Pre-Indexed Knowledge Base:** Includes **24,628 encyclopedic articles** (55.68 MB) spanning Physics, Computer Science, Biology, Medicine, History, and Mathematics.
 
 ---
